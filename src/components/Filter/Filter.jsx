@@ -8,10 +8,14 @@ const FilterName = ({ value, onChange }) => {
   const filterId = nanoid();
   return (
     <FilterThumb>
-    <FilterLabel htmlFor={filterId}>
-      Find contacts by name
-    </FilterLabel>
-    <FilterInput type="text" id={filterId} value={value} onChange={onChange} /></FilterThumb>
+      <FilterLabel htmlFor={filterId}>Find contacts by name</FilterLabel>
+      <FilterInput
+        type="text"
+        id={filterId}
+        value={value}
+        onChange={onChange}
+      />
+    </FilterThumb>
   );
 };
 

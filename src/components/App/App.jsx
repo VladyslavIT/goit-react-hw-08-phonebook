@@ -6,8 +6,15 @@ import { Form } from '../Form/Form';
 import { Contact } from '../Contacts/Contacts';
 import { FilterName } from '../Filter/Filter';
 
-import { Container, Section, Title, TitleContacts, WrapperForm, WrapperContatcts, Text } from './App.styled';
-
+import {
+  Container,
+  Section,
+  Title,
+  TitleContacts,
+  WrapperForm,
+  WrapperContatcts,
+  Text,
+} from './App.styled';
 
 class App extends React.Component {
   state = {
@@ -62,14 +69,25 @@ class App extends React.Component {
       <Container>
         <Section>
           <WrapperForm>
-        <Title>Phonebook</Title>
-          <Form onSubmit={this.formSubmit} /></WrapperForm>
+            <Title>Phonebook</Title>
+            <Form onSubmit={this.formSubmit} />
+          </WrapperForm>
           <WrapperContatcts>
-          <TitleContacts>Contacts</TitleContacts>
-          {contacts.length > 0 ?  ( <> <FilterName value={filter} onChange={this.filterChange} />
-          <Contact contactList={contactItem} deleteItem={this.deleteContact} /> </>) : (<Text>You don't have contacts</Text>) }
-      </WrapperContatcts>
-          </Section>
+            <TitleContacts>Contacts</TitleContacts>
+            {contacts.length > 0 ? (
+              <>
+                {' '}
+                <FilterName value={filter} onChange={this.filterChange} />
+                <Contact
+                  contactList={contactItem}
+                  deleteItem={this.deleteContact}
+                />{' '}
+              </>
+            ) : (
+              <Text>You don't have contacts</Text>
+            )}
+          </WrapperContatcts>
+        </Section>
       </Container>
     );
   }
