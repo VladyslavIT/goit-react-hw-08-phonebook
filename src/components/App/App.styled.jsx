@@ -18,15 +18,12 @@ export const Section = styled.section`
   background-color: inherit;
   padding: 15px;
   border: 2px dashed black;
- 
 `;
 
-export const WrapperForm = styled.div`
-   
-`;
+export const WrapperForm = styled.div``;
 
 export const WrapperContatcts = styled.div`
-    width: 30%;
+  width: 30%;
 `;
 export const Title = styled.h1`
   text-align: center;
@@ -39,5 +36,5 @@ export const TitleContacts = styled.h2`
 `;
 
 export const Text = styled.p`
-    text-align: center;
+  text-align: center;
 `;
