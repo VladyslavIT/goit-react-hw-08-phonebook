@@ -62,6 +62,21 @@ class App extends React.Component {
     }));
     Notiflix.Notify.info(`Contact has been deleted`);
   };
+
+  componentDidMount() {
+    const storageContacts = JSON.parse(localStorage.getItem('contacts'));
+    if (storageContacts) {
+      this.setState({ contacts: storageContacts });
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    const { contacts } = this.state;
+    if (prevState.contacts !== contacts) {
+      localStorage.setItem('contacts', JSON.stringify(contacts));
+    }
+  }
+
   render() {
     const contactItem = this.contactShow();
     const { contacts, filter } = this.state;
