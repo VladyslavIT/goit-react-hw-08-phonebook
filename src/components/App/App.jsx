@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Notiflix from 'notiflix';
 import { nanoid } from 'nanoid';
 
@@ -16,96 +16,81 @@ import {
   Text,
 } from './App.styled';
 
-class App extends React.Component {
-  state = {
-    contacts: [],
-    filter: '',
-  };
+const App = () => {
+  const [contacts, setContacts] = useState(() => {
+    return JSON.parse(localStorage.getItem('contacts')) ?? '';
+  });
+  const [filter, setFilter] = useState('');
 
-  formSubmit = ({ name, number }) => {
+  useEffect(() => {
+    localStorage.setItem('contacts', JSON.stringify(contacts));
+  }, [contacts]);
+
+  const formSubmit = ({ name, number }) => {
     const newContact = {
       id: nanoid(),
       name,
       number,
     };
 
-    const stateName = this.state.contacts
+    const stateName = contacts
       .map(contact => contact.name.toLowerCase())
       .includes(name.toLowerCase());
+    
     if (stateName) {
       Notiflix.Notify.failure(`${name} is already in contacts`);
     } else {
-      this.setState(({ contacts }) => ({
-        contacts: [...contacts, newContact],
-      }));
+      setContacts([...contacts, newContact]);
       Notiflix.Notify.success(`Contact added successfully`);
     }
   };
 
-  contactShow = () => {
-    const { contacts, filter } = this.state;
+  const contactShow = () => {
     const toLower = filter.toLowerCase();
+
     return contacts.filter(contact =>
       contact.name.toLowerCase().includes(toLower)
     );
   };
 
-  filterChange = event => {
-    this.setState({
-      filter: event.currentTarget.value,
-    });
+  const filterChange = event => {
+    setFilter(event.currentTarget.value);
   };
 
-  deleteContact = id => {
-    this.setState(prevState => ({
-      contacts: prevState.contacts.filter(contact => contact.id !== id),
-    }));
+  const deleteContact = id => {
+    setContacts(() => {
+      return contacts.filter(contact => contact.id !== id);
+    });
     Notiflix.Notify.info(`Contact has been deleted`);
   };
 
-  componentDidMount() {
-    const storageContacts = JSON.parse(localStorage.getItem('contacts'));
-    if (storageContacts) {
-      this.setState({ contacts: storageContacts });
-    }
-  }
+  const contactItem = contactShow();
 
-  componentDidUpdate(prevProps, prevState) {
-    const { contacts } = this.state;
-    if (prevState.contacts !== contacts) {
-      localStorage.setItem('contacts', JSON.stringify(contacts));
-    }
-  }
-
-  render() {
-    const contactItem = this.contactShow();
-    const { contacts, filter } = this.state;
-    return (
-      <Container>
-        <Section>
-          <WrapperForm>
-            <Title>Phonebook</Title>
-            <Form onSubmit={this.formSubmit} />
-          </WrapperForm>
-          <WrapperContatcts>
-            <TitleContacts>Contacts</TitleContacts>
-            {contacts.length > 0 ? (
-              <>
-                {' '}
-                <FilterName value={filter} onChange={this.filterChange} />
-                <Contact
-                  contactList={contactItem}
-                  deleteItem={this.deleteContact}
-                />{' '}
-              </>
-            ) : (
-              <Text>You don't have contacts</Text>
-            )}
-          </WrapperContatcts>
-        </Section>
-      </Container>
-    );
-  }
-}
+  return (
+    <Container>
+      <Section>
+        <WrapperForm>
+          <Title>Phonebook</Title>
+          <Form onSubmit={formSubmit} />
+        </WrapperForm>
+        <WrapperContatcts>
+          <TitleContacts>Contacts</TitleContacts>
+          {contacts.length > 0 ? (
+            <>
+              {' '}
+              <FilterName value={filter} onChange={filterChange} />
+              <Contact
+                contactList={contactItem}
+                deleteItem={deleteContact}
+              />{' '}
+            </>
+          ) : (
+            <Text>You don't have contacts</Text>
+          )}
+        </WrapperContatcts>
+      </Section>
+    </Container>
+  );
+};
 
 export { App };
