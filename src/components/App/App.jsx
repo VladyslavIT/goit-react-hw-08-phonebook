@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import Notiflix from 'notiflix';
 import { nanoid } from 'nanoid';
+import { useDispatch, useSelector } from 'react-redux';
+import { setFilter } from 'redux/store';
+
 
 import { Form } from '../Form/Form';
 import { Contact } from '../Contacts/Contacts';
@@ -20,7 +23,11 @@ const App = () => {
   const [contacts, setContacts] = useState(() => {
     return JSON.parse(localStorage.getItem('contacts')) ?? [];
   });
-  const [filter, setFilter] = useState('');
+  // const [filter, setFilter] = useState('');
+
+  const dispatch = useDispatch();
+  const filter = useSelector(state => state.filter);
+  console.log(filter);
 
   useEffect(() => {
     localStorage.setItem('contacts', JSON.stringify(contacts));
@@ -54,7 +61,7 @@ const App = () => {
   };
 
   const filterChange = event => {
-    setFilter(event.currentTarget.value);
+   dispatch(setFilter(event.currentTarget.value));
   };
 
   const deleteContact = id => {
