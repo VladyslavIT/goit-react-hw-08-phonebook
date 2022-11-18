@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import Notiflix from 'notiflix';
 import { nanoid } from 'nanoid';
 import { useDispatch, useSelector } from 'react-redux';
-import { setFilter } from 'redux/store';
-
+import { setFilter } from 'redux/filterSlice';
+import { addContact, deleteContact } from 'redux/contactSlice';
 
 import { Form } from '../Form/Form';
 import { Contact } from '../Contacts/Contacts';
@@ -20,18 +20,9 @@ import {
 } from './App.styled';
 
 const App = () => {
-  const [contacts, setContacts] = useState(() => {
-    return JSON.parse(localStorage.getItem('contacts')) ?? [];
-  });
-  // const [filter, setFilter] = useState('');
-
   const dispatch = useDispatch();
+  const contacts = useSelector(state => state.contacts.items);
   const filter = useSelector(state => state.filter);
-  console.log(filter);
-
-  useEffect(() => {
-    localStorage.setItem('contacts', JSON.stringify(contacts));
-  }, [contacts]);
 
   const formSubmit = ({ name, number }) => {
     const newContact = {
@@ -43,11 +34,11 @@ const App = () => {
     const stateName = contacts
       .map(contact => contact.name.toLowerCase())
       .includes(name.toLowerCase());
-    
+
     if (stateName) {
       Notiflix.Notify.failure(`${name} is already in contacts`);
     } else {
-      setContacts([...contacts, newContact]);
+      dispatch(addContact(newContact));
       Notiflix.Notify.success(`Contact added successfully`);
     }
   };
@@ -61,13 +52,11 @@ const App = () => {
   };
 
   const filterChange = event => {
-   dispatch(setFilter(event.currentTarget.value));
+    dispatch(setFilter(event.currentTarget.value));
   };
 
-  const deleteContact = id => {
-    setContacts(() => {
-      return contacts.filter(contact => contact.id !== id);
-    });
+  const deleteContactItem = id => {
+    dispatch(deleteContact(id));
     Notiflix.Notify.info(`Contact has been deleted`);
   };
 
@@ -88,7 +77,7 @@ const App = () => {
               <FilterName value={filter} onChange={filterChange} />
               <Contact
                 contactList={contactItem}
-                deleteItem={deleteContact}
+                deleteItem={deleteContactItem}
               />{' '}
             </>
           ) : (
