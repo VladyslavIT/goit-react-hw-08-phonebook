@@ -1,9 +1,30 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import Notiflix from 'notiflix';
+import { useDispatch, useSelector } from 'react-redux';
+import { deleteContact } from 'redux/contactSlice';
 
 import { List, ListItem, ListButton } from './Contacts.styled';
 
-const Contact = ({ contactList, deleteItem }) => {
+const Contact = () => {
+  const contacts = useSelector(state => state.contacts.items);
+  const filter = useSelector(state => state.filter);
+  const dispatch = useDispatch();
+
+  const contactShow = () => {
+    const toLower = filter.toLowerCase();
+
+    return contacts.filter(contact =>
+      contact.name.toLowerCase().includes(toLower)
+    );
+  };
+
+  const deleteItem = id => {
+    dispatch(deleteContact(id));
+    Notiflix.Notify.info(`Contact has been deleted`);
+  };
+
+  const contactList = contactShow();
+
   return (
     <List>
       {contactList.map(({ id, name, number }) => (
@@ -16,13 +37,4 @@ const Contact = ({ contactList, deleteItem }) => {
   );
 };
 
-Contact.propTypes = {
-  contactList: PropTypes.arrayOf(
-    PropTypes.shape({
-    id: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
-    number: PropTypes.string.isRequired,
-  })).isRequired,
-  deleteItem: PropTypes.func.isRequired,
-};
 export { Contact };
