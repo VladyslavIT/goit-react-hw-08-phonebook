@@ -12,7 +12,6 @@ const Form = () => {
   const [number, setNumber] = useState('');
   const { data: contacts } = useGetContactsQuery();
   const [addContact] = useAddContactMutation();
-  
 
   const numberInputId = nanoid();
   const nameInputId = nanoid();
