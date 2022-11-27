@@ -1,14 +1,15 @@
 import React from 'react';
 import Notiflix from 'notiflix';
-import { useDispatch, useSelector } from 'react-redux';
-import { deleteContact } from 'redux/contactSlice';
+import { useSelector } from 'react-redux';
+import { useGetContactsQuery } from 'redux/contactSlice';
+import { useDeleteContactMutation } from 'redux/contactSlice';
 
 import { List, ListItem, ListButton } from './Contacts.styled';
 
 const Contact = () => {
-  const contacts = useSelector(state => state.contacts.items);
+  const { data: contacts } = useGetContactsQuery();
+  const [deleteContact] = useDeleteContactMutation();
   const filter = useSelector(state => state.filter);
-  const dispatch = useDispatch();
 
   const contactShow = () => {
     const toLower = filter.toLowerCase();
@@ -19,7 +20,7 @@ const Contact = () => {
   };
 
   const deleteItem = id => {
-    dispatch(deleteContact(id));
+    deleteContact(id);
     Notiflix.Notify.info(`Contact has been deleted`);
   };
 

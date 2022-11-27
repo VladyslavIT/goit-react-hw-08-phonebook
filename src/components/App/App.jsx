@@ -1,5 +1,5 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useGetContactsQuery } from 'redux/contactSlice';
 
 import { Form } from '../Form/Form';
 import { Contact } from '../Contacts/Contacts';
@@ -16,7 +16,7 @@ import {
 } from './App.styled';
 
 const App = () => {
-  const contacts = useSelector(state => state.contacts.items);
+  const { data: contacts = [] } = useGetContactsQuery();
 
   return (
     <Container>

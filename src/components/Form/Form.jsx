@@ -2,16 +2,17 @@ import React from 'react';
 import Notiflix from 'notiflix';
 import { useState } from 'react';
 import { nanoid } from 'nanoid';
-import { useDispatch, useSelector } from 'react-redux';
-import { addContact } from 'redux/contactSlice';
+import { useGetContactsQuery } from 'redux/contactSlice';
+import { useAddContactMutation } from 'redux/contactSlice';
 
 import { FormEl, Label, Input, ButtonForm } from './Form.styled';
 
 const Form = () => {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
-  const dispatch = useDispatch();
-  const contacts = useSelector(state => state.contacts.items);
+  const { data: contacts } = useGetContactsQuery();
+  const [addContact] = useAddContactMutation();
+  
 
   const numberInputId = nanoid();
   const nameInputId = nanoid();
@@ -34,7 +35,6 @@ const Form = () => {
   const handleSubmit = event => {
     event.preventDefault();
     const newContact = {
-      id: nanoid(),
       name,
       number,
     };
@@ -47,7 +47,7 @@ const Form = () => {
       Notiflix.Notify.failure(`${name} is already in contacts`);
       return;
     } else {
-      dispatch(addContact(newContact));
+      addContact(newContact);
       Notiflix.Notify.success(`Contact added successfully`);
       reset();
     }
