@@ -1,14 +1,10 @@
 import React from 'react';
-import Notiflix from 'notiflix';
 import { useSelector } from 'react-redux';
 import { useGetContactsQuery } from 'redux/contactSlice';
-import { useDeleteContactMutation } from 'redux/contactSlice';
-
-import { List, ListItem, ListButton } from './Contacts.styled';
+import { ContactItem } from 'components/OneContact/OneContact';
 
 const Contact = () => {
   const { data: contacts } = useGetContactsQuery();
-  const [deleteContact] = useDeleteContactMutation();
   const filter = useSelector(state => state.filter);
 
   const contactShow = () => {
@@ -19,22 +15,12 @@ const Contact = () => {
     );
   };
 
-  const deleteItem = id => {
-    deleteContact(id);
-    Notiflix.Notify.info(`Contact has been deleted`);
-  };
-
-  const contactList = contactShow();
-
   return (
-    <List>
-      {contactList.map(({ id, name, number }) => (
-        <ListItem key={id}>
-          {name}: {number}
-          <ListButton onClick={() => deleteItem(id)}>Delete</ListButton>
-        </ListItem>
+    <ul>
+      {contactShow().map(({ id, name, number }) => (
+        <ContactItem id={id} name={name} number={number} />
       ))}
-    </List>
+    </ul>
   );
 };
 

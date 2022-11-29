@@ -1,9 +1,10 @@
 import React from 'react';
 import Notiflix from 'notiflix';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { nanoid } from 'nanoid';
 import { useGetContactsQuery } from 'redux/contactSlice';
 import { useAddContactMutation } from 'redux/contactSlice';
+import { Loader } from 'components/Loader/Loader';
 
 import { FormEl, Label, Input, ButtonForm } from './Form.styled';
 
@@ -11,10 +12,17 @@ const Form = () => {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
   const { data: contacts } = useGetContactsQuery();
-  const [addContact] = useAddContactMutation();
+  const [addContact, { isLoading, isSuccess }] = useAddContactMutation();
 
   const numberInputId = nanoid();
   const nameInputId = nanoid();
+
+  useEffect(() => {
+    if (isSuccess) {
+      Notiflix.Notify.success(`Contact added successfully`);
+      reset();
+    }
+  }, [isSuccess]);
 
   const inputChange = event => {
     const { name, value } = event.currentTarget;
@@ -47,8 +55,6 @@ const Form = () => {
       return;
     } else {
       addContact(newContact);
-      Notiflix.Notify.success(`Contact added successfully`);
-      reset();
     }
   };
 
@@ -82,8 +88,11 @@ const Form = () => {
         title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
         required
       />
-
-      <ButtonForm type="submit">Add Contact</ButtonForm>
+      {isLoading ? (
+        <Loader />
+      ) : (
+        <ButtonForm type="submit">Add Contact</ButtonForm>
+      )}
     </FormEl>
   );
 };
