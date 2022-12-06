@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 export const ListItem = styled.li`
   display: flex;
   padding: 8px;
-  border-bottom: 1px dashed black;
+  border-bottom: 1px solid black;
 
   &::before {
     content: '-';

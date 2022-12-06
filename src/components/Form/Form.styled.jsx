@@ -30,6 +30,6 @@ export const ButtonForm = styled.button`
   transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1);
   background-color: inherit;
   &:hover {
-    background-color: #a6f37a;
+    background-color: greenyellow;
   }
 `;
