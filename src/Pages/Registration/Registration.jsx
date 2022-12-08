@@ -6,18 +6,27 @@ import TextField from '@mui/material/TextField';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
-// import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
+import { NavLink } from 'react-router-dom';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useUserSignupMutation } from 'redux/auth/authApi';
+import { useState } from 'react';
 
 function Copyright(props) {
   return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      
-      <Link color="inherit" href="#">
-        Github
+    <Typography
+      variant="body2"
+      color="text.secondary"
+      align="center"
+      {...props}
+    >
+      <Link
+        color="inherit"
+        href="https://github.com/VladyslavIT"
+        target="_blank"
+      >
+        VladyslavIT
       </Link>{' '}
       {new Date().getFullYear()}
       {'.'}
@@ -29,17 +38,43 @@ const theme = createTheme();
 
 const Registration = () => {
   const [createUser, { isLoading }] = useUserSignupMutation();
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    const newUser = {
-      name: data.get('firstName'),
-      email: data.get('email'),
-      password: data.get('password'),
-    }
-      createUser(newUser);
-  };
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  
 
+  const handleSubmit = event => {
+    event.preventDefault();
+    const newUser = {
+      name,
+      email,
+      password
+    };
+    createUser(newUser);
+    reset();
+  };
+  const inputChange = event => {
+    const { name, value } = event.currentTarget;
+
+    switch (name) {
+      case 'firstName':
+        setName(value);
+        break;
+      case 'email':
+        setEmail(value);
+        break;
+       case 'password':
+        setPassword(value);
+        break;
+      default:
+        return;
+    }
+  };
+    const reset = () => {
+    setName('');
+      setEmail('');
+      setPassword('');
+  };
   return (
     <ThemeProvider theme={theme}>
       <Container component="main" maxWidth="xs">
@@ -52,37 +87,50 @@ const Registration = () => {
             alignItems: 'center',
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-            {/* <LockOutlinedIcon /> */}
-          </Avatar>
+          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}></Avatar>
           <Typography component="h1" variant="h5">
             Registration
           </Typography>
-          <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+          <Box
+            component="form"
+            onSubmit={handleSubmit}
+            sx={{ mt: 3 }}
+          >
             <Grid container spacing={2}>
-              <Grid item xs={12} sm={6}>
+              <Grid item xs={12}>
                 <TextField
+                  onChange={inputChange}
+                  value={name}
                   autoComplete="given-name"
                   name="firstName"
                   required
                   fullWidth
                   id="firstName"
-                  label="First Name"
+                  label="Name"
                   autoFocus
+            
                 />
               </Grid>
+
               <Grid item xs={12}>
                 <TextField
+                  onChange={inputChange}
+                  value={email}
                   required
                   fullWidth
                   id="email"
                   label="Email Address"
                   name="email"
                   autoComplete="email"
+                  helperText='Email must contain @gmail.com'
+                  inputProps={{ className: 'input', pattern: "^([a-z0-9_-]+\.)*[a-z0-9_-]+@[a-z0-9_-]+(\.[a-z0-9_-]+)*\.[a-z]{2,6}$" }}
                 />
               </Grid>
+
               <Grid item xs={12}>
                 <TextField
+                  onChange={inputChange}
+                  value={password}
                   required
                   fullWidth
                   name="password"
@@ -90,6 +138,8 @@ const Registration = () => {
                   type="password"
                   id="password"
                   autoComplete="new-password"
+                  helperText='Password must be at least 7 characters'
+                  inputProps={{ className: 'input', pattern: "{7,20}" }}
                 />
               </Grid>
             </Grid>
@@ -102,10 +152,10 @@ const Registration = () => {
               Sign Up
             </Button>
             <Grid container justifyContent="center">
-              <Grid item >
-                <Link href="#" variant="body2">
-                  Already have an account? Sign in
-                </Link>
+              <Grid item>
+                <NavLink to="/login" variant="body2">
+                  Already have an account? Login
+                </NavLink>
               </Grid>
             </Grid>
           </Box>
@@ -114,6 +164,6 @@ const Registration = () => {
       </Container>
     </ThemeProvider>
   );
-}
+};
 
 export { Registration };

@@ -4,32 +4,34 @@ import { Layout } from 'components/Layout/Layout';
 import { Main } from 'components/Main/Main';
 import { Registration } from 'Pages/Registration/Registration';
 import { LogIn } from 'Pages/Login/Login';
-import { Contact } from 'components/Contacts/Contacts';
+import { Home } from 'Pages/Home/Home';
+import { useSelector } from 'react-redux';
 import RestrictedRoute from './RestrictedRoute';
 import PrivateRoute from './PrivateRoute';
 
 const App = () => {
+  const isRefreshing = useSelector(state => state.auth.isRefreshing);
   return (
-    <>
+    !isRefreshing && (
       <Routes>
         <Route path="/" element={<Layout />}>
-          <Route index element={<Main />} />
+          <Route index element={<Home />} />
           <Route
             path="contacts"
             element={
               <PrivateRoute>
-                <Contact />
+                <Main />
               </PrivateRoute>
             }
           ></Route>
-          {/* <Route path="/" element={<RestrictedRoute restricted />}> */}
-            <Route path="/signup" element={<Registration />}></Route>
-            <Route path="/login" element={<LogIn />}></Route>
-          {/* </Route> */}
-          <Route path="*" element={<Navigate to="/login" replace />} />
+          <Route path="/" element={<RestrictedRoute restricted />}>
+          <Route path="/signup" element={<Registration />}></Route>
+          <Route path="/login" element={<LogIn />}></Route>
+          </Route>
+          <Route path="*" element={<Navigate to="/" replace />} />
         </Route>
       </Routes>
-    </>
+    )
   );
 };
 

@@ -14,14 +14,12 @@ import {
   REGISTER,
 } from 'redux-persist';
 
-
 export const store = configureStore({
   reducer: {
     auth: persistedReducer,
     filter: filterReducer,
     [authApi.reducerPath]: authApi.reducer,
     [contactsApi.reducerPath]: contactsApi.reducer,
-    
   },
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({

@@ -1,31 +1,23 @@
 import React from 'react';
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
 import { Outlet } from 'react-router-dom';
 import { Suspense } from 'react';
-
-import { Container, LinkNav } from './Layout.styled';
+import { Box } from '@mui/material';
+import { AuthNav } from 'components/Navigation/authNav';
+import { UserNav } from 'components/Navigation/userNav';
+import { useSelector } from 'react-redux';
+import { useUserGetQuery } from 'redux/auth/authApi';
+import { Container } from './Layout.styled';
 
 const Layout = () => {
+  const isLoggedIn = useSelector(state => state.auth.isLoggedIn);
+    const token = useSelector(state => state.auth.token);
+    useUserGetQuery({}, { skip: !token });
+
   return (
     <Container>
     <Box sx={{ flexGrow: 0.5 }} width="30%">
-      <AppBar position="static">
-        <Toolbar>
-          <Typography variant="h6" component="nav" sx={{ flexGrow: 1 }}>
-            <LinkNav to="/">Phonebook</LinkNav>
-          </Typography>
-          <LinkNav to="/signup" >
-            Sign Up
-          </LinkNav>
-          <LinkNav to="/login" >
-            Login
-          </LinkNav>
-        </Toolbar>
-      </AppBar>
-      <Suspense fullback={null}>
+        {isLoggedIn ? <UserNav /> : <AuthNav />}
+        <Suspense fullback={null}>
         <Outlet />
       </Suspense>
       </Box>

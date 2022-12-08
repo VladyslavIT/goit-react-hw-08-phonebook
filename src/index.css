@@ -13,15 +13,26 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
- ul {
+ul {
   padding: 0;
   margin: 0;
   list-style: none;
- }
- h1,h2,h3, p {
+}
+h1,
+h2,
+h3,
+p {
   margin: 0;
   padding: 0;
- }
- button {
+}
+button {
   cursor: pointer;
- }
+}
+.icon {
+  margin-right: 2px;
+}
+/* .input {
+  &:invalid: {
+    border: 1px solid red;
+  }
+} */

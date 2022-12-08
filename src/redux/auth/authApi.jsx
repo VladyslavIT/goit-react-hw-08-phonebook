@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
-const BASE_URL = 'https://connections-api.herokuapp.com';
+const BASE_URL = 'https://connections-api.herokuapp.com/';
 
 const baseQuery = fetchBaseQuery({
   baseUrl: BASE_URL,
@@ -9,6 +9,7 @@ const baseQuery = fetchBaseQuery({
     if (token) {
       headers.set('authorization', `Bearer ${token}`);
     }
+
     return headers;
   },
 });
@@ -19,15 +20,14 @@ export const authApi = createApi({
   tagTypes: ['user'],
   endpoints: builder => ({
     userGet: builder.query({
-      query: () => `/users/current`,
+      query: () => `users/current`,
       providesTags: ['user'],
     }),
     userLogin: builder.mutation({
       query: user => ({
-        url: `/user/login`,
+        url: `users/login`,
         method: 'POST',
         body: {
-          name: user.name,
           email: user.email,
           password: user.password,
         },
@@ -36,9 +36,9 @@ export const authApi = createApi({
     }),
     userSignup: builder.mutation({
       query: newUser => ({
-        url: `/user/signup`,
+        url: `users/signup`,
         method: 'POST',
-         body: {
+        body: {
           name: newUser.name,
           email: newUser.email,
           password: newUser.password,
@@ -48,7 +48,7 @@ export const authApi = createApi({
     }),
     userLogout: builder.mutation({
       query: () => ({
-        url: `/user/logout`,
+        url: `users/logout`,
         method: 'POST',
       }),
       invalidatesTags: ['user'],

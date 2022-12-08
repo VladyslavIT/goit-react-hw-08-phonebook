@@ -1,9 +1,9 @@
 import React from 'react';
 import { useGetContactsQuery } from 'redux/contactSlice';
-
 import { Form } from '../Form/Form';
 import { Contact } from '../Contacts/Contacts';
 import { FilterName } from '../Filter/Filter';
+import { Outlet } from 'react-router-dom';
 
 import {
   Container,
@@ -14,13 +14,13 @@ import {
   WrapperContatcts,
   Text,
 } from './Main.styled';
-import { Layout } from 'components/Layout/Layout';
+
 
 const Main = () => {
   const { data: contacts = [] } = useGetContactsQuery();
 
   return (
-    <Container>
+    <>    <Container>
       <Section>
         <WrapperForm>
           <Title>Phonebook</Title>
@@ -40,6 +40,9 @@ const Main = () => {
         </WrapperContatcts>
       </Section>
     </Container>
+      <Outlet />
+      </>
+
   );
 };
 
