@@ -37,7 +37,7 @@ function Copyright(props) {
 const theme = createTheme();
 
 const Registration = () => {
-  const [createUser, { isLoading }] = useUserSignupMutation();
+  const [createUser] = useUserSignupMutation();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -123,7 +123,7 @@ const Registration = () => {
                   name="email"
                   autoComplete="email"
                   helperText='Email must contain @gmail.com'
-                  inputProps={{ className: 'input', pattern: "^([a-z0-9_-]+\.)*[a-z0-9_-]+@[a-z0-9_-]+(\.[a-z0-9_-]+)*\.[a-z]{2,6}$" }}
+                  inputProps={{ className: 'input', pattern: "^([a-z0-9_-]+/.)*[a-z0-9_-]+@[a-z0-9_-]+(/.[a-z0-9_-]+)*/.[a-z]{2,6}$" }}
                 />
               </Grid>
 
