@@ -1,13 +1,17 @@
 import React from 'react';
 import { Route, Routes, Navigate } from 'react-router-dom';
-import { Layout } from 'components/Layout/Layout';
-import { Main } from 'components/Main/Main';
-import { Registration } from 'Pages/Registration/Registration';
-import { LogIn } from 'Pages/Login/Login';
-import { Home } from 'Pages/Home/Home';
+import  Layout  from 'components/Layout/Layout';
 import { useSelector } from 'react-redux';
-import RestrictedRoute from './RestrictedRoute';
-import PrivateRoute from './PrivateRoute';
+import { lazy } from 'react';
+
+
+const Home = lazy(() => import('Pages/Home/Home'));
+const Main = lazy(() => import('../Main/Main'));
+const PrivateRoute = lazy(() => import('./PrivateRoute'));
+const Registration = lazy(() => import('Pages/Registration/Registration'));
+const LogIn = lazy(() => import('Pages/Login/Login'));
+const RestrictedRoute = lazy(() => import('./RestrictedRoute'));
+
 
 const App = () => {
   const isRefreshing = useSelector(state => state.auth.isRefreshing);

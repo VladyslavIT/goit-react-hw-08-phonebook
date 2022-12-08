@@ -8,7 +8,7 @@ import { useSelector } from 'react-redux';
 import { useUserGetQuery } from 'redux/auth/authApi';
 import { Container } from './Layout.styled';
 
-const Layout = () => {
+export default function Layout() {
   const isLoggedIn = useSelector(state => state.auth.isLoggedIn);
     const token = useSelector(state => state.auth.token);
     useUserGetQuery({}, { skip: !token });
@@ -25,4 +25,4 @@ const Layout = () => {
   );
 };
 
-export { Layout };
+

@@ -36,7 +36,7 @@ function Copyright(props) {
 
 const theme = createTheme();
 
-const Registration = () => {
+export default function Registration() {
   const [createUser] = useUserSignupMutation();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -166,4 +166,4 @@ const Registration = () => {
   );
 };
 
-export { Registration };
+

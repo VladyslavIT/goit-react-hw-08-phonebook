@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import { useUserGetQuery } from 'redux/auth/authApi';
 
 
-export const Home = () => {
+export default function Home() {
   const { data } = useUserGetQuery();
   const isLoggedIn = useSelector(state => state.auth.isLoggedIn);
   return (

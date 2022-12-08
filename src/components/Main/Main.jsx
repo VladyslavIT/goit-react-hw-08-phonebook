@@ -16,7 +16,7 @@ import {
 } from './Main.styled';
 
 
-const Main = () => {
+export default function Main() {
   const { data: contacts = [] } = useGetContactsQuery();
 
   return (
@@ -46,4 +46,3 @@ const Main = () => {
   );
 };
 
-export { Main};
