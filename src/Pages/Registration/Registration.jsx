@@ -123,7 +123,7 @@ export default function Registration() {
                   name="email"
                   autoComplete="email"
                   helperText='Email must contain @gmail.com'
-                  inputProps={{ className: 'input', pattern: "^([a-z0-9_-]+/.)*[a-z0-9_-]+@[a-z0-9_-]+(/.[a-z0-9_-]+)*/.[a-z]{2,6}$" }}
+                  inputProps={{ className: 'input', pattern: "^[a-z0-9._%+-]+@[a-z0-9.-]+$" }}
                 />
               </Grid>
 
